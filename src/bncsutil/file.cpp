@@ -211,7 +211,7 @@ file_t file_open(const char* filename, unsigned int mode_flags)
 		data = new _file;
 	} catch (std::bad_alloc) {
 		bncsutil_debug_message_a("Failed to allocate %u bytes to hold"
-			"file structure."), sizeof(struct _file));
+			"file structure.", sizeof(struct _file));
 		fclose(f);
 		return (file_t) 0;
 	}
@@ -221,8 +221,8 @@ file_t file_open(const char* filename, unsigned int mode_flags)
 	if (!data->filename) {
 		err = sys_error_msg();
 		bncsutil_debug_message_a("Failed to allocate %u bytes to hold"
-			"filename; %s"), filename_buf_len);
-		free_sys_error_msg(err);
+			"filename; %s", filename_buf_len);
+		free_sys_err_msg(err);
 		fclose(f);
 		delete data;
 		return (file_t) 0;
@@ -241,6 +241,8 @@ void file_close(file_t file)
 		bncsutil_debug_message("error: null pointer given to file_close");
 		return;
 	}
+
+	mapping_map::iterator it;
 	
 	for (it = file->mappings.begin(); it != file->mappings.end(); it++) {
 		munmap((void*) (*it).first, (*it).second);
@@ -284,7 +286,7 @@ void* file_map(file_t file, size_t len, off_t offset)
 		bncsutil_debug_message_a("error: failed to map %u bytes of %s "
 			"starting at %u into memory; %s", len, file->filename, offset,
 			err);
-		free_sys_error_msg(err);
+		free_sys_err_msg(err);
 		return (void*) 0;
 	}
 	
