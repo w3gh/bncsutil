@@ -124,7 +124,7 @@ MEXP(int) extractMPQNumber(const char* mpqName)
 	return mpqNum;
 }
 
-const char* basename(const char* file_name)
+const char* get_basename(const char* file_name)
 {
 	const char* base;
 
@@ -351,7 +351,7 @@ MEXP(int) getExeInfo(const char* file_name, char* exe_info,
 	if (!file_name || !exe_info || !exe_info_size || !version)
 		return 0;
 
-	base = basename(file_name);
+	base = get_basename(file_name);
 
 	switch (platform) {
 		case BNCSUTIL_PLATFORM_X86:
